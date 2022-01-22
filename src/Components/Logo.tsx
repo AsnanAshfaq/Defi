@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoText: {
-    fontSize: Sizes.large * 3,
+    fontSize: Sizes.large * 2.8,
     fontFamily: 'TitilliumWeb-SemiBold',
   },
   tagLineText: {

@@ -3,6 +3,7 @@ const Colors = {
   PURPLE: '#32142D',
   GREY: '#808080',
   WHITE: '#FFFFFF',
+  ERROR_TEXT: '#ff4344',
 };
 
 export default Colors;

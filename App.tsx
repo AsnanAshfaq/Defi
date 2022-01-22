@@ -8,12 +8,23 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Splash from './src/Screens/Splash';
+import Naivgation from './src/Navigations/index';
 
 const App = () => {
-  return <Splash />;
+  const [showSplash, setshowSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setshowSplash(false);
+    }, 3000);
+  });
+  if (showSplash) {
+    return <Splash />;
+  }
+  return <Naivgation />;
 };
 
 export default App;
