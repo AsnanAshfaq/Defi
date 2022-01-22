@@ -5,15 +5,19 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import Colors from '../Constants/Colors';
 import {LogoWithTagLine} from '../Components/Logo';
 import CustomTextInput from '../Components/TextInput';
 import Button from '../Components/Button';
 import {Sizes} from '../Constants/Size';
 
-const SignIn = () => {
+type props = {
+  navigation: any;
+};
+const SignIn: FC<props> = ({navigation}) => {
   const [Input, setInput] = useState({
     email: {value: '', error: ''},
     password: {value: '', error: ''},
@@ -56,7 +60,7 @@ const SignIn = () => {
           </View>
           <View style={styles.inputContainer}>
             <CustomTextInput
-              defaultValue={Input.email.value}
+              defaultValue={Input.password.value}
               keyboardType="default"
               onChangeText={text =>
                 setInput(props => {
@@ -76,18 +80,19 @@ const SignIn = () => {
           </View>
         </View>
         <View style={[{flex: 0.15}, styles.center]}>
-          <Button
-            text="Login"
-            onPress={() => console.log('Pressed on button')}
-          />
+          <Button text="Login" onPress={() => navigation.navigate('SignUp')} />
         </View>
         {/* rest of the stuff */}
         <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>
           <Text style={[styles.footerText, {color: Colors.GREY}]}>
             New to Dafi ?{' '}
-            <Text style={[styles.footerText, {color: Colors.WHITE}]}>
-              Register Now
-            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('SignUp')}>
+              <Text style={[styles.footerText, {color: Colors.WHITE}]}>
+                Register Now
+              </Text>
+            </TouchableWithoutFeedback>
+            <Text style={[styles.footerText, {color: Colors.WHITE}]}></Text>
           </Text>
         </View>
       </View>
