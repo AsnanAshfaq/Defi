@@ -139,7 +139,13 @@ const CustomTextInput: FC<props> = ({
       />
 
       {showLength && (
-        <View style={{position: 'absolute', width: 40, right: 3, top: 5}}>
+        <View
+          style={{
+            position: 'absolute',
+            width: Width * 0.08,
+            right: 0,
+            top: 13,
+          }}>
           <Text
             style={{
               color: Colors.GREY,
@@ -174,6 +180,7 @@ const styles = StyleSheet.create({
   textField: {
     fontSize: Sizes.normal * 0.8,
     marginLeft: 10,
+    fontFamily: 'TitilliumWeb-Regular',
   },
   errorText: {
     fontSize: Sizes.small,

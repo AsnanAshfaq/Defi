@@ -8,11 +8,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import React, {FC, useState} from 'react';
-import Colors from '../Constants/Colors';
-import {LogoWithTagLine} from '../Components/Logo';
-import CustomTextInput from '../Components/TextInput';
-import Button from '../Components/Button';
-import {Sizes} from '../Constants/Size';
+import Colors from '../../Constants/Colors';
+import {LogoWithTagLine} from '../../Components/Logo';
+import CustomTextInput from '../../Components/TextInput';
+import Button from '../../Components/Button';
+import {Sizes} from '../../Constants/Size';
 
 type props = {
   navigation: any;
@@ -25,6 +25,7 @@ const SignIn: FC<props> = ({navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={-80}
       style={{flex: 1}}>
       <View
         style={[
@@ -116,5 +117,6 @@ const styles = StyleSheet.create({
   footerContainer: {},
   footerText: {
     fontSize: Sizes.normal * 0.8,
+    fontFamily: 'TitilliumWeb-Regular',
   },
 });
