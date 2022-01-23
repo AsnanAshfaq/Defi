@@ -15,6 +15,7 @@ import CustomTextInput from '../../Components/AuthInput';
 import Button from '../../Components/Button';
 import {Sizes} from '../../Constants/Size';
 import auth from '@react-native-firebase/auth';
+import Loading from '../../Components/Loading';
 
 type props = {
   navigation: any;
@@ -28,6 +29,7 @@ const SignIn: FC<props> = ({navigation}) => {
 
   const handleLogIn = () => {
     setloading(true);
+
     auth()
       .signInWithEmailAndPassword(Input.email.value, Input.password.value)
       .then(() => {
@@ -103,7 +105,7 @@ const SignIn: FC<props> = ({navigation}) => {
           </View>
         </View>
         <View style={[{flex: 0.15}, styles.center]}>
-          <Button text="Login" onPress={handleLogIn} />
+          <Button text="Login" onPress={handleLogIn} loading={loading} />
         </View>
         {/* rest of the stuff */}
         <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>

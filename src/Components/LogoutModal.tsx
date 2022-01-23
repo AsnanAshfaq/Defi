@@ -14,6 +14,7 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import auth from '@react-native-firebase/auth';
+import Loading from './Loading';
 
 type props = {
   isShow: boolean;
@@ -25,10 +26,17 @@ const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
 
   const handleLogout = () => {
     setloading(true);
+
     auth()
       .signOut()
-      .then(() => setloading(false))
-      .catch(() => setloading(false));
+      .then(() => {
+        setloading(false);
+        toggleModal();
+      })
+      .catch(() => {
+        setloading(false);
+        toggleModal();
+      });
   };
   return (
     <Modal
@@ -61,24 +69,31 @@ const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
         </View>
 
         {/* done button  */}
-        <View style={styles.applyButtonContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              // toggle modal first
-              toggleModal();
-            }}
-            style={[styles.applyButton]}>
-            <Text style={[styles.apply]}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // toggle modal first
-              handleLogout();
-            }}
-            style={[styles.applyButton]}>
-            <Text style={[styles.apply]}>Yes</Text>
-          </TouchableOpacity>
-        </View>
+
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <Loading />
+          </View>
+        ) : (
+          <View style={styles.applyButtonContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                // toggle modal first
+                toggleModal();
+              }}
+              style={[styles.applyButton]}>
+              <Text style={[styles.apply]}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                // toggle modal first
+                handleLogout();
+              }}
+              style={[styles.applyButton]}>
+              <Text style={[styles.apply]}>Yes</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </>
     </Modal>
   );
@@ -117,6 +132,10 @@ const styles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingContainer: {
+    flex: 0.2,
+    justifyContent: 'center',
   },
   applyButtonContainer: {
     flex: 0.2,
