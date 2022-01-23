@@ -3,10 +3,11 @@ import React from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
+import {handeLocaleNotifications} from '../../Notifications';
 
 const Notifications = () => {
   const getNotifications = () => {
-    console.log('Getting notifications');
+    handeLocaleNotifications();
   };
   return (
     <View style={styles.parent}>
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: Width * 0.04,
     marginTop: Platform.OS === 'android' ? 10 : 5,
-    backgroundColor: Colors.SCREEN_BACKGROUND_COLOR,
   },
   buttonContainer: {
     flex: 1,

@@ -1,8 +1,8 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import Colors from '../Constants/Colors';
-import {Sizes} from '../Constants/Size';
-
+import {Sizes, Width} from '../Constants/Size';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 type props = {
   label: string;
 };
@@ -12,7 +12,7 @@ const Header: FC<props> = ({label}) => {
       <View style={styles.labelContainer}>
         <Text style={[styles.labelText, {color: Colors.PURPLE}]}>{label}</Text>
       </View>
-      <View style={styles.drawerIconContainer}>
+      <View style={styles.logoutContainer}>
         {/* <View
           style={{
             width: 40,
@@ -29,13 +29,13 @@ const Header: FC<props> = ({label}) => {
             marginLeft: 10,
           }}
         /> */}
-        {/* <Text
-          style={{
-            color: Colors.DARK_PURPLE,
-            fontSize: Sizes.normal,
-          }}>
-          Hey Asnan
-        </Text> */}
+
+        <MaterialIcons
+          name={'logout'}
+          color={Colors.PURPLE}
+          size={Width * 0.07}
+        />
+        <Text style={styles.logoutText}>Logout{'   '}</Text>
       </View>
     </View>
   );
@@ -48,16 +48,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   labelContainer: {
-    flex: 0.7,
+    flex: 0.85,
   },
   labelText: {
     fontSize: Sizes.large * 1.3,
     fontFamily: 'TitilliumWeb-Bold',
   },
-  drawerIconContainer: {
-    flex: 0.3,
+  logoutText: {
+    color: Colors.DARK_PURPLE,
+    fontSize: Sizes.normal * 0.8,
+    fontFamily: 'TitilliumWeb-Regular',
+  },
+  logoutContainer: {
+    flex: 0.15,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
 });

@@ -13,7 +13,7 @@ const index: FC = () => {
     <NavigationContainer
       theme={{
         colors: {
-          background: Colors.WHITE, //depending upn the auth state(if true than purple otherwise white)
+          background: Colors.SCREEN_BACKGROUND_COLOR, //depending upn the auth state(if true than purple otherwise white)
           border: '#fff',
           card: '#fff',
           notification: '#fff',

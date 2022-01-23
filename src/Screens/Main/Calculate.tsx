@@ -33,7 +33,6 @@ const Calculate: FC = () => {
   const calculate = () => {
     console.log('Handling calculations');
   };
-  console.log('Operator is', Input.operator);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -142,7 +141,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: Width * 0.04,
     marginTop: Platform.OS === 'android' ? 10 : 5,
-    backgroundColor: Colors.SCREEN_BACKGROUND_COLOR,
   },
   center: {
     justifyContent: 'center',
