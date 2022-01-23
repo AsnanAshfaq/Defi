@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {FC, useState} from 'react';
 import Header from '../../Components/Header';
@@ -12,6 +13,7 @@ import Colors from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import CalculatorInput from '../../Components/CalculatorInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import OperatorModal from '../../Components/OperatorModal';
 
 const ICON_SIZE = Width * 0.07;
 const Calculate: FC = () => {
@@ -22,98 +24,114 @@ const Calculate: FC = () => {
     result: '746',
   });
 
+  const [modal, setmodal] = useState(false);
+
   const openModal = () => {
-    console.log('Handling open modal');
+    setmodal(true);
   };
 
   const calculate = () => {
     console.log('Handling calculations');
   };
+  console.log('Operator is', Input.operator);
   return (
-    <View
-      style={[
-        styles.parent,
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={-80}
+      style={{flex: 1}}>
+      <View style={[styles.parent]}>
+        <OperatorModal
+          value={Input.operator}
+          isShow={modal}
+          onSelect={value =>
+            setInput(props => {
+              return {
+                ...props,
+                operator: value.toLocaleLowerCase(),
+              };
+            })
+          }
+          toggleModal={() => setmodal(false)}
+        />
+        <Header label="Calculate" />
+        <View style={[{flex: 1}, styles.center]}>
+          <View style={{flex: 0.5, justifyContent: 'flex-end'}}>
+            <CalculatorInput
+              placeholder="First Value"
+              value={Input.first.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    first: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+            />
 
-        {backgroundColor: Colors.SCREEN_BACKGROUND_COLOR},
-      ]}>
-      <Header label="Calculate" />
-      <View style={[{flex: 1}, styles.center]}>
-        <View style={{flex: 0.5, justifyContent: 'flex-end'}}>
-          <CalculatorInput
-            placeholder="First Value"
-            value={Input.first.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  first: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-          />
-
-          {/* operator container  */}
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <View style={styles.operatorTextContainer}>
-              <Text style={styles.operatorText}>
-                {Input.operator === 'multiplication'
-                  ? 'X'
-                  : Input.operator === 'addition'
-                  ? '+'
-                  : Input.operator === 'subtraction' && '-'}
-              </Text>
+            {/* operator container  */}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View style={styles.operatorTextContainer}>
+                <Text style={styles.operatorText}>
+                  {Input.operator === 'multiplication'
+                    ? 'X'
+                    : Input.operator === 'addition'
+                    ? '+'
+                    : Input.operator === 'subtraction' && '-'}
+                </Text>
+              </View>
+              <View style={styles.dropIconContainer}>
+                <TouchableWithoutFeedback onPress={openModal}>
+                  <AntDesign
+                    name="caretdown"
+                    color={Colors.DARK_PURPLE}
+                    size={ICON_SIZE * 0.8}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
             </View>
-            <View style={styles.dropIconContainer}>
-              <TouchableWithoutFeedback onPress={openModal}>
-                <AntDesign
-                  name="caretdown"
-                  color={Colors.DARK_PURPLE}
-                  size={ICON_SIZE * 0.8}
-                />
-              </TouchableWithoutFeedback>
-            </View>
+            <CalculatorInput
+              placeholder="Second Value"
+              value={Input.second.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    second: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+            />
           </View>
-          <CalculatorInput
-            placeholder="Second Value"
-            value={Input.second.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  second: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-          />
-        </View>
 
-        <View style={[styles.buttonContainer, styles.center]}>
-          {Input.result !== '' && (
-            <>
-              <Text style={styles.operatorText}>=</Text>
-              <Text style={styles.operatorText}>746</Text>
-            </>
-          )}
+          <View style={[styles.buttonContainer, styles.center]}>
+            {Input.result !== '' && (
+              <>
+                <Text style={styles.operatorText}>=</Text>
+                <Text style={styles.operatorText}>746</Text>
+              </>
+            )}
 
-          <TouchableOpacity
-            style={[styles.button, styles.center]}
-            onPress={calculate}
-            activeOpacity={0.5}>
-            <Text style={[styles.buttonText]}>Calculate</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.center]}
+              onPress={calculate}
+              activeOpacity={0.5}>
+              <Text style={[styles.buttonText]}>Calculate</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -124,6 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: Width * 0.04,
     marginTop: Platform.OS === 'android' ? 10 : 5,
+    backgroundColor: Colors.SCREEN_BACKGROUND_COLOR,
   },
   center: {
     justifyContent: 'center',
