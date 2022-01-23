@@ -10,7 +10,7 @@ import {
 import React, {FC, useState} from 'react';
 import Colors from '../../Constants/Colors';
 import {LogoWithTagLine} from '../../Components/Logo';
-import CustomTextInput from '../../Components/TextInput';
+import CustomTextInput from '../../Components/AuthInput';
 import Button from '../../Components/Button';
 import {Sizes} from '../../Constants/Size';
 
