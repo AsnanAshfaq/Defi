@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
 const Notifications = () => {
@@ -31,7 +32,8 @@ const Notifications = () => {
      * - if you are not using remote notification or do not have Firebase installed, use this:
      *     requestPermissions: Platform.OS === 'ios'
      */
-    requestPermissions: true,
+    // requestPermissions: true,
+    requestPermissions: Platform.OS === 'ios',
   });
 };
 
@@ -48,7 +50,7 @@ const handeLocaleNotifications = () => {
     vibration: 300,
     playSound: true,
     soundName: 'default',
-    actions: ["Yes", "No"],
+    actions: ['Yes', 'No'],
   });
 };
 
