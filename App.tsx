@@ -12,14 +12,11 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Splash from './src/Screens/Splash';
 import Naivgation from './src/Navigations/index';
-import Notifications from './src/Notifications';
 
 const App = () => {
   const [showSplash, setshowSplash] = useState(true);
 
   useEffect(() => {
-    // set notifications
-    Notifications();
     setTimeout(() => {
       setshowSplash(false);
     }, 3000);

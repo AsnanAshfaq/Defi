@@ -7,7 +7,7 @@ import {handeLocaleNotifications} from '../../Notifications';
 
 const Notifications = () => {
   const getNotifications = () => {
-    handeLocaleNotifications();
+    handeLocaleNotifications('Hey There!', "Is the app good?");
   };
   return (
     <View style={styles.parent}>

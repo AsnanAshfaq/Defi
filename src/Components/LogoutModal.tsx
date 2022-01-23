@@ -13,45 +13,17 @@ import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-type OperatorProps = {
-  value: string;
-  isChecked: boolean | undefined;
-  setIsChecked: (value: string) => void;
-};
-const Operator: FC<OperatorProps> = ({value, isChecked, setIsChecked}) => {
-  return (
-    <View style={{flexDirection: 'row', marginVertical: 3, marginLeft: 10}}>
-      <BouncyCheckbox
-        size={20}
-        fillColor={Colors.PURPLE}
-        unfillColor={Colors.PURPLE}
-        // text="Custom Checkbox"
-        iconStyle={{borderColor: Colors.GREY}}
-        onPress={(check: boolean) => {
-          setIsChecked(value.toLowerCase());
-        }}
-        isChecked={isChecked}
-        disableBuiltInState={true}
-      />
-      <View style={{marginLeft: 10}}>
-        <Text style={[styles.operatorText]}>{value}</Text>
-      </View>
-    </View>
-  );
-};
 
 type props = {
-  value: string;
   isShow: boolean;
   toggleModal: () => void;
-  onSelect: (value: string) => void;
 };
 
-const OperatorModal: FC<props> = ({isShow, toggleModal, value, onSelect}) => {
-  const [CheckBox, setCheckBox] = useState<string>(value);
-  const handleSelect = () => {
-    // get all the selected technologies
-    onSelect(CheckBox);
+const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
+  const handleLogout = () => {
+    console.log('Handling logout');
+    // set loading first
+    // then close modal
   };
 
   return (
@@ -75,25 +47,13 @@ const OperatorModal: FC<props> = ({isShow, toggleModal, value, onSelect}) => {
       useNativeDriverForBackdrop={true}>
       <>
         <View style={styles.headingContainer}>
-          <Text style={[styles.heading]}>Select Operator </Text>
+          <Text style={[styles.heading]}>Logout </Text>
         </View>
 
-        <View style={{flex: 0.5}}>
-          <Operator
-            value="Multiplication"
-            isChecked={CheckBox === 'multiplication'}
-            setIsChecked={setCheckBox}
-          />
-          <Operator
-            value="Addition"
-            isChecked={CheckBox === 'addition'}
-            setIsChecked={setCheckBox}
-          />
-          <Operator
-            value="Subtraction"
-            isChecked={CheckBox === 'subtraction'}
-            setIsChecked={setCheckBox}
-          />
+        <View style={[{flex: 0.4}, styles.center]}>
+          <Text style={styles.helpText}>
+            Are you sure that you want to logout?
+          </Text>
         </View>
 
         {/* done button  */}
@@ -102,10 +62,17 @@ const OperatorModal: FC<props> = ({isShow, toggleModal, value, onSelect}) => {
             onPress={() => {
               // toggle modal first
               toggleModal();
-              handleSelect();
             }}
             style={[styles.applyButton]}>
-            <Text style={[styles.apply]}>Done</Text>
+            <Text style={[styles.apply]}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // toggle modal first
+              handleLogout();
+            }}
+            style={[styles.applyButton]}>
+            <Text style={[styles.apply]}>Yes</Text>
           </TouchableOpacity>
         </View>
       </>
@@ -122,7 +89,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     marginVertical: Height * 0.32,
     position: 'absolute',
-    height: Height * 0.3,
+    height: Height * 0.23,
     marginHorizontal: Width * 0.1,
     width: Width * 0.8,
   },
@@ -130,27 +97,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 3,
-    flex: 0.3,
+    flex: 0.4,
   },
   heading: {
     fontSize: Sizes.normal * 1.2,
     color: Colors.GREY,
     fontFamily: 'TitilliumWeb-Regular',
   },
-  scroll: {
-    marginVertical: 15,
-  },
-  tag: {
-    fontSize: Sizes.normal * 0.85,
-    marginRight: 30,
-    padding: 3,
-    flexShrink: 1,
-    lineHeight: 19,
-  },
-  operatorText: {
-    fontSize: Sizes.normal,
+
+  helpText: {
     color: Colors.WHITE,
+    fontSize: Sizes.normal * 0.9,
     fontFamily: 'TitilliumWeb-Regular',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   applyButtonContainer: {
     flex: 0.2,
@@ -165,11 +127,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     backgroundColor: Colors.DARK_PURPLE,
+    marginHorizontal: 5,
   },
   apply: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.8,
     color: Colors.WHITE,
     fontFamily: 'TitilliumWeb-Regular',
   },
 });
-export default OperatorModal;
+export default LogoutModal;

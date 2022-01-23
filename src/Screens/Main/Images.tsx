@@ -6,12 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {FC} from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
 import {Height, Width} from '../../Constants/Size';
 import ImageCard from '../../Components/ImageCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as ImagePicker from 'react-native-image-picker';
 
 const Data = [
   'https://cdn.pixabay.com/photo/2017/01/08/13/58/cube-1963036__340.jpg',
@@ -20,13 +21,28 @@ const Data = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJB-LNm-0OOD5g1FEXFqDsLgSZEGuaWJA8zw&usqp=CAU',
   'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
 ];
-const Images = () => {
+const Images: FC = () => {
   const openCamera = () => {
-    console.log('Opening camera');
+    ImagePicker.launchCamera(
+      {
+        mediaType: 'photo',
+        cameraType: 'back',
+      },
+      res => {
+        console.log('Respnose is', res);
+      },
+    );
   };
 
   const openGallery = () => {
-    console.log('Opening gallery');
+    ImagePicker.launchImageLibrary(
+      {
+        mediaType: 'photo',
+      },
+      res => {
+        console.log('Response is', res);
+      },
+    );
   };
   return (
     <View style={[styles.parent]}>

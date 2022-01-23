@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
 const Notifications = () => {
@@ -37,15 +37,15 @@ const Notifications = () => {
   });
 };
 
-const handeLocaleNotifications = () => {
+const handeLocaleNotifications = (title: string, message: string) => {
   PushNotification.localNotification({
     channelId: 'ashes_everywhere',
     autoCancel: true,
     bigText:
-      'This is local notification demo in React Native app. Only shown, when expanded.',
+      'This is local notification demo in Defi app. Only shown, when expanded.',
     subText: 'Local Notification Demo',
-    title: 'Local Notification Title',
-    message: 'Expand me to see more',
+    title: title,
+    message: message,
     vibrate: true,
     vibration: 300,
     playSound: true,

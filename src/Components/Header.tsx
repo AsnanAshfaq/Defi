@@ -1,42 +1,34 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {FC} from 'react';
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import React, {FC, useState} from 'react';
 import Colors from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LogoutModal from './LogoutModal';
 type props = {
   label: string;
 };
 const Header: FC<props> = ({label}) => {
+  const [modal, setmodal] = useState(false);
   return (
     <View style={styles.parent}>
+      <LogoutModal isShow={modal} toggleModal={() => setmodal(false)} />
       <View style={styles.labelContainer}>
         <Text style={[styles.labelText, {color: Colors.PURPLE}]}>{label}</Text>
       </View>
-      <View style={styles.logoutContainer}>
-        {/* <View
-          style={{
-            width: 40,
-            height: 2.5,
-            backgroundColor: Colors.DARK_PURPLE,
-            marginBottom: 5,
-          }}
-        />
-        <View
-          style={{
-            width: 30,
-            height: 2.5,
-            backgroundColor: Colors.DARK_PURPLE,
-            marginLeft: 10,
-          }}
-        /> */}
-
-        <MaterialIcons
-          name={'logout'}
-          color={Colors.PURPLE}
-          size={Width * 0.07}
-        />
-        <Text style={styles.logoutText}>Logout{'   '}</Text>
-      </View>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setmodal(true);
+          console.log('Opening modal');
+        }}>
+        <View style={styles.logoutContainer}>
+          <MaterialIcons
+            name={'logout'}
+            color={Colors.PURPLE}
+            size={Width * 0.07}
+          />
+          <Text style={styles.logoutText}>Logout{'   '}</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
