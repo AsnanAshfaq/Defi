@@ -68,6 +68,7 @@ const TabScreens = () => {
         ),
 
         tabBarActiveTintColor: Colors.WHITE,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: Colors.PURPLE,
           borderColor: 'transparent',

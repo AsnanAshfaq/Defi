@@ -5,6 +5,7 @@ const Colors = {
   WHITE: '#FFFFFF',
   ERROR_TEXT: '#ff4344',
   SCREEN_BACKGROUND_COLOR: '#F9F9F9',
+  CARD_BACKGROUND: '#EFEFEF',
 };
 
 export default Colors;

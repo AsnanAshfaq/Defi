@@ -34,7 +34,7 @@ const Images = () => {
 
       <FlatList
         data={Data}
-        style={{marginTop: Height * 0.05}}
+        style={{marginTop: Height * 0.03}}
         keyExtractor={(item, index) => `${index}`}
         renderItem={({item}) => (
           <ImageCard
@@ -45,8 +45,7 @@ const Images = () => {
         contentContainerStyle={styles.center}
       />
 
-      {/* post icon container  */}
-
+      {/* icon container  */}
       <View style={styles.iconContainer}>
         <View
           style={[
