@@ -12,19 +12,25 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Splash from './src/Screens/Splash';
 import Naivgation from './src/Navigations/index';
+import auth from '@react-native-firebase/auth';
 
 const App = () => {
   const [showSplash, setshowSplash] = useState(true);
+  const [loading, setloading] = useState(false);
+  const [user, setUser] = useState<any>();
+
+  function onAuthStateChanged(user: any) {
+    setUser(user);
+    if (loading) setloading(false);
+  }
 
   useEffect(() => {
-    setTimeout(() => {
-      setshowSplash(false);
-    }, 3000);
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
   });
-  if (showSplash) {
+  if (loading) {
     return <Splash />;
   }
-  return <Naivgation />;
+  return <Naivgation is_authenticated={user ? true : false} />;
 };
 
 export default App;

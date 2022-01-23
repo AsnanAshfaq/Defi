@@ -8,12 +8,15 @@ import Colors from '../Constants/Colors';
 
 const Stack = createNativeStackNavigator();
 
-const index: FC = () => {
+type props = {
+  is_authenticated: boolean;
+};
+const index: FC<props> = ({is_authenticated}) => {
   return (
     <NavigationContainer
       theme={{
         colors: {
-          background: Colors.SCREEN_BACKGROUND_COLOR, //depending upn the auth state(if true than purple otherwise white)
+          background: is_authenticated ? Colors.WHITE : Colors.PURPLE, //depending upn the auth state(if true than purple otherwise white)
           border: '#fff',
           card: '#fff',
           notification: '#fff',
@@ -32,8 +35,11 @@ const index: FC = () => {
             detachPreviousScreen: !navigation.isFocused(),
           };
         }}>
-        {/* <Stack.Screen name="Auth" component={Auth} /> */}
-        <Stack.Screen name="Main" component={Main} />
+        {is_authenticated ? (
+          <Stack.Screen name="Main" component={Main} />
+        ) : (
+          <Stack.Screen name="Auth" component={Auth} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -13,6 +13,7 @@ import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import auth from '@react-native-firebase/auth';
 
 type props = {
   isShow: boolean;
@@ -20,12 +21,15 @@ type props = {
 };
 
 const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
-  const handleLogout = () => {
-    console.log('Handling logout');
-    // set loading first
-    // then close modal
-  };
+  const [loading, setloading] = useState(false);
 
+  const handleLogout = () => {
+    setloading(true);
+    auth()
+      .signOut()
+      .then(() => setloading(false))
+      .catch(() => setloading(false));
+  };
   return (
     <Modal
       isVisible={isShow}

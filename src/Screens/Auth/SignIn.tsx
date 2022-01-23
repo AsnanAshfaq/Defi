@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
+  ToastAndroid,
 } from 'react-native';
 import React, {FC, useState} from 'react';
 import Colors from '../../Constants/Colors';
@@ -13,15 +14,36 @@ import {LogoWithTagLine} from '../../Components/Logo';
 import CustomTextInput from '../../Components/AuthInput';
 import Button from '../../Components/Button';
 import {Sizes} from '../../Constants/Size';
+import auth from '@react-native-firebase/auth';
 
 type props = {
   navigation: any;
 };
 const SignIn: FC<props> = ({navigation}) => {
+  const [loading, setloading] = useState(false);
   const [Input, setInput] = useState({
-    email: {value: '', error: ''},
-    password: {value: '', error: ''},
+    email: {value: '18asnan@gmail.com', error: ''},
+    password: {value: 'Shanay_Ash18', error: ''},
   });
+
+  const handleLogIn = () => {
+    setloading(true);
+    auth()
+      .signInWithEmailAndPassword(Input.email.value, Input.password.value)
+      .then(() => {
+        setloading(false);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          ToastAndroid.show('Email Address is already in use', 1500);
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          ToastAndroid.show('Email Address is invalid', 1500);
+        }
+        setloading(false);
+      });
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -81,7 +103,7 @@ const SignIn: FC<props> = ({navigation}) => {
           </View>
         </View>
         <View style={[{flex: 0.15}, styles.center]}>
-          <Button text="Login" onPress={() => navigation.navigate('SignUp')} />
+          <Button text="Login" onPress={handleLogIn} />
         </View>
         {/* rest of the stuff */}
         <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>

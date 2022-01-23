@@ -4,11 +4,14 @@ import Colors from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LogoutModal from './LogoutModal';
+import auth from '@react-native-firebase/auth';
+
 type props = {
   label: string;
 };
 const Header: FC<props> = ({label}) => {
   const [modal, setmodal] = useState(false);
+
   return (
     <View style={styles.parent}>
       <LogoutModal isShow={modal} toggleModal={() => setmodal(false)} />
