@@ -72,8 +72,8 @@ const TabScreens = () => {
           backgroundColor: Colors.PURPLE,
           borderColor: 'transparent',
           borderTopWidth: 1,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
         },
         header: () => null,
       })}
