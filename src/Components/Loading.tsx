@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import LottieView from 'lottie-react-native';
-import {Sizes, Width} from '../Constants/Size';
+import {Height, Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 
 type props = {
@@ -17,13 +17,19 @@ const Loading: FC<props> = ({
   color = Colors.WHITE,
 }) => {
   return (
-    <View style={styles.center}>
+    <View
+      style={[
+        styles.center,
+        {
+          width: width,
+          height: 20,
+        },
+      ]}>
       <LottieView
         source={require('../Animations/loading.json')}
         autoPlay
         style={{
           width: width,
-          // height: height,
         }}
         loop
         colorFilters={[
@@ -45,7 +51,6 @@ const Loading: FC<props> = ({
           },
         ]}
       />
-      {text !== '' && <Text style={styles.text}>{text}</Text>}
     </View>
   );
 };

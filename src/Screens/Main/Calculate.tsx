@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   KeyboardAvoidingView,
+  ToastAndroid,
 } from 'react-native';
 import React, {FC, useState} from 'react';
 import Header from '../../Components/Header';
@@ -14,6 +15,8 @@ import {Sizes, Width} from '../../Constants/Size';
 import CalculatorInput from '../../Components/CalculatorInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OperatorModal from '../../Modals/OperatorModal';
+import Button from '../../Components/Button';
+import Loading from '../../Components/Loading';
 
 const ICON_SIZE = Width * 0.07;
 const Calculate: FC = () => {
@@ -21,8 +24,9 @@ const Calculate: FC = () => {
     first: {value: '', error: ''},
     second: {value: '', error: ''},
     operator: 'multiplication',
-    result: '746',
+    result: '',
   });
+  const [loading, setloading] = useState(false);
 
   const [modal, setmodal] = useState(false);
 
@@ -32,6 +36,38 @@ const Calculate: FC = () => {
 
   const calculate = () => {
     console.log('Handling calculations');
+    var numbers = /^[0-9]+$/;
+
+    // check if both inputs are numbers
+    if (Input.first.value.trim() === '') {
+      ToastAndroid.show('First value is empty', 1500);
+    } else if (Input.second.value.trim() === '') {
+      ToastAndroid.show('Second value is empty', 1500);
+    } else if (!numbers.test(Input.first.value)) {
+      ToastAndroid.show('First value is not a valid number', 1500);
+    } else if (!numbers.test(Input.second.value)) {
+      ToastAndroid.show('Second value is not a valid number', 1500);
+    } else {
+      // make api call
+      setloading(true);
+
+      fetch(
+        `https://backend-defi.herokuapp.com/?first=${Input.first.value.trim()}&second=${Input.second.value.trim()}&operator=${Input.operator.trim()}`,
+      )
+        .then(res => res.json())
+        .then(data => {
+          setInput(props => {
+            return {
+              ...props,
+              first: {value: '', error: ''},
+              second: {value: '', error: ''},
+              result: data,
+            };
+          });
+          setloading(false);
+        })
+        .catch(() => setloading(false));
+    }
   };
   return (
     <KeyboardAvoidingView
@@ -117,15 +153,20 @@ const Calculate: FC = () => {
             {Input.result !== '' && (
               <>
                 <Text style={styles.operatorText}>=</Text>
-                <Text style={styles.operatorText}>746</Text>
+                <Text style={styles.operatorText}>{Input.result}</Text>
               </>
             )}
 
             <TouchableOpacity
               style={[styles.button, styles.center]}
               onPress={calculate}
+              disabled={loading}
               activeOpacity={0.5}>
-              <Text style={[styles.buttonText]}>Calculate</Text>
+              {loading ? (
+                <Loading />
+              ) : (
+                <Text style={[styles.buttonText]}>Calculate</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
