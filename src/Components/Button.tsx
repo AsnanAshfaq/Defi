@@ -26,21 +26,6 @@ const Button: FC<props> = ({text, onPress, loading}) => {
       style={[styles.container, styles.center]}
       onPress={onPress}
       activeOpacity={0.5}>
-      {/* {loading ? (
-        <View
-          style={{
-            // height: 20,
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            // width: Width * 0.7,
-            backgroundColor: 'red',
-            flex: 0.15,
-          }}>
-
-          <Loading />
-        </View>
-      ) : (
-      )} */}
       <Text style={[styles.text, {color: Colors.WHITE}]}>{text}</Text>
     </TouchableOpacity>
   );

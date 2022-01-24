@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
+  ToastAndroid,
 } from 'react-native';
 import React, {FC, useState} from 'react';
 import Colors from '../../Constants/Colors';
@@ -13,16 +14,47 @@ import {LogoWithTagLine} from '../../Components/Logo';
 import CustomTextInput from '../../Components/AuthInput';
 import Button from '../../Components/Button';
 import {Sizes} from '../../Constants/Size';
+import auth from '@react-native-firebase/auth';
 
 type props = {
   navigation: any;
 };
 const SignUp: FC<props> = ({navigation}) => {
   const [Input, setInput] = useState({
-    name: {value: '', error: ''},
-    email: {value: '', error: ''},
-    password: {value: '', error: ''},
+    email: {value: 'asnanashfaq@yahoo.com', error: ''},
+    password: {value: 'Shanay_Ash18', error: ''},
   });
+  const [loading, setloading] = useState(false);
+
+  const handleRegister = () => {
+    // few checks
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (Input.email.value.trim() === '') {
+      ToastAndroid.show('Email cannot be empty', 1500);
+    } else if (!emailRegex.test(Input.email.value)) {
+      ToastAndroid.show('Plase enter a valid Email Address', 1500);
+    } else if (Input.password.value.trim() === '') {
+      ToastAndroid.show('Password cannot be empty', 1500);
+    } else {
+      auth()
+        .createUserWithEmailAndPassword(Input.email.value, Input.password.value)
+        .then(() => {
+          setloading(false);
+        })
+        .catch((error: any) => {
+          if (error.code === 'auth/email-already-in-use') {
+            ToastAndroid.show('Email Address is already in use', 1500);
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            ToastAndroid.show('Email Address is invalid', 1500);
+          }
+          setloading(false);
+        });
+    }
+  };
   return (
     <ScrollView
       keyboardShouldPersistTaps={'never'}
@@ -30,7 +62,7 @@ const SignUp: FC<props> = ({navigation}) => {
       <>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={-20}
+          keyboardVerticalOffset={-100}
           style={{flex: 1, flexDirection: 'column'}}>
           <View
             style={[
@@ -44,28 +76,7 @@ const SignUp: FC<props> = ({navigation}) => {
               <LogoWithTagLine />
             </View>
 
-            <View style={{flex: 0.35}}>
-              <View style={styles.inputContainer}>
-                <CustomTextInput
-                  defaultValue={Input.name.value}
-                  keyboardType="default"
-                  onChangeText={text =>
-                    setInput(props => {
-                      return {
-                        ...props,
-                        name: {
-                          value: text,
-                          error: '',
-                        },
-                      };
-                    })
-                  }
-                  placeholder="Full Name"
-                  name="full_name"
-                  showLength
-                  maxLength={20}
-                />
-              </View>
+            <View style={{flex: 0.2}}>
               <View style={styles.inputContainer}>
                 <CustomTextInput
                   defaultValue={Input.email.value}
@@ -106,14 +117,11 @@ const SignUp: FC<props> = ({navigation}) => {
                 />
               </View>
             </View>
-            <View style={[{flex: 0.1}, styles.center]}>
-              <Button
-                text="Register"
-                onPress={() => console.log('Registering')}
-              />
+            <View style={[{flex: 0.15}, styles.center]}>
+              <Button text="Register" onPress={handleRegister} />
             </View>
             {/* rest of the stuff */}
-            <View style={[{flex: 0.1}, styles.center, styles.footerContainer]}>
+            <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>
               <Text style={[styles.footerText, {color: Colors.GREY}]}>
                 Joined us before ?{' '}
                 <TouchableWithoutFeedback

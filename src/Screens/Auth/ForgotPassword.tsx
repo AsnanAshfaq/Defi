@@ -6,7 +6,6 @@ import {
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
-  Keyboard,
   ToastAndroid,
 } from 'react-native';
 import React, {FC, useState} from 'react';
@@ -14,21 +13,23 @@ import Colors from '../../Constants/Colors';
 import {LogoWithTagLine} from '../../Components/Logo';
 import CustomTextInput from '../../Components/AuthInput';
 import Button from '../../Components/Button';
-import {Sizes} from '../../Constants/Size';
-import auth from '@react-native-firebase/auth';
+import {Height, Sizes} from '../../Constants/Size';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Loading from '../../Components/Loading';
 
 type props = {
   navigation: any;
 };
-const SignIn: FC<props> = ({navigation}) => {
+const ForgotPassword: FC<props> = ({navigation}) => {
   const [loading, setloading] = useState(false);
   const [Input, setInput] = useState({
     email: {value: '18asnan@gmail.com', error: ''},
     password: {value: 'Shanay_Ash18', error: ''},
+    confirm_password: {value: 'Shanay_Ash18', error: ''},
   });
 
-  const handleLogIn = () => {
+  const changePassword = () => {
+    setloading(true);
     // few checks
     const emailRegex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,28 +40,20 @@ const SignIn: FC<props> = ({navigation}) => {
       ToastAndroid.show('Plase enter a valid Email Address', 1500);
     } else if (Input.password.value.trim() === '') {
       ToastAndroid.show('Password cannot be empty', 1500);
+    } else if (
+      Input.password.value.trim() !== Input.confirm_password.value.trim()
+    ) {
+      ToastAndroid.show('Passwords are not same', 1500);
     } else {
-      auth()
-        .signInWithEmailAndPassword(Input.email.value, Input.password.value)
-        .then(() => {
-          setloading(false);
-        })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            ToastAndroid.show('Email Address is already in use', 1500);
-          }
-
-          if (error.code === 'auth/invalid-email') {
-            ToastAndroid.show('Email Address is invalid', 1500);
-          }
-          setloading(false);
-        });
+      console.log('Everything is clear');
     }
+    setloading(false);
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={-100}
+      keyboardVerticalOffset={-(Height * 0.08)}
       style={{flex: 1}}>
       <View
         style={[
@@ -74,7 +67,7 @@ const SignIn: FC<props> = ({navigation}) => {
           <LogoWithTagLine />
         </View>
 
-        <View style={{flex: 0.2}}>
+        <View style={{flex: 0.25}}>
           <View style={styles.inputContainer}>
             <CustomTextInput
               defaultValue={Input.email.value}
@@ -111,28 +104,45 @@ const SignIn: FC<props> = ({navigation}) => {
               }
               placeholder="Password"
               name="password"
-              // maxLength={15}
               is_password
             />
           </View>
-          <View style={[styles.inputContainer, {alignItems: 'flex-end'}]}>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={styles.forgotText}>Forgot Password?</Text>
-            </TouchableWithoutFeedback>
+          <View style={styles.inputContainer}>
+            <CustomTextInput
+              defaultValue={Input.confirm_password.value}
+              keyboardType="default"
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    confirm_password: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              placeholder="Confirm Password"
+              name="password"
+              is_password
+            />
           </View>
         </View>
         <View style={[{flex: 0.15}, styles.center]}>
-          <Button text="Login" onPress={handleLogIn} loading={loading} />
+          <Button
+            text="Change Password"
+            onPress={changePassword}
+            loading={loading}
+          />
         </View>
         {/* rest of the stuff */}
-        <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>
+        <View style={[{flex: 0.15}, styles.center, styles.footerContainer]}>
           <Text style={[styles.footerText, {color: Colors.GREY}]}>
-            New to Defi ?{' '}
+            Back to{'  '}
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('SignUp')}>
+              onPress={() => navigation.navigate('SignIn')}>
               <Text style={[styles.footerText, {color: Colors.WHITE}]}>
-                Register Now
+                Login
               </Text>
             </TouchableWithoutFeedback>
             <Text style={[styles.footerText, {color: Colors.WHITE}]}></Text>
@@ -143,7 +153,7 @@ const SignIn: FC<props> = ({navigation}) => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
 
 const styles = StyleSheet.create({
   parent: {
