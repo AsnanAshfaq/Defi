@@ -33,16 +33,16 @@ const Images: FC = () => {
   const [refreshing, setrefreshing] = useState(false);
 
   const uploadImage = (path: any, filename: any) => {
-    let reference = storage().ref(filename);
+    let reference = storage().ref('Images/' + filename);
+
+    ToastAndroid.show('Uploading image', 1500);
 
     const task = reference.putFile(path);
-
-    console.log('Uploading image');
     task
       .then(() => {
         ToastAndroid.show('Image has been uploaded', 1500);
         ToastAndroid.show('Refreshing', 1500);
-        // setrefreshing(true);
+        setrefreshing(true);
       })
       .catch(() => {
         console.log('Error occurred while uploading image');
@@ -101,24 +101,22 @@ const Images: FC = () => {
   };
 
   const getImagePaths = async () => {
-    // setloading(true);
     const reference = storage().ref().child('Images').listAll();
     const urls = await Promise.all(
       (await reference).items.map(ref => ref.getDownloadURL()),
     );
     setpaths(urls);
-    // setloading(false);
+    setrefreshing(false);
   };
 
   const onRefresh = () => {
     setrefreshing(true);
     getImagePaths();
-    setrefreshing(false);
   };
 
   useEffect(() => {
     getImagePaths();
-  }, []);
+  }, [refreshing]);
 
   return (
     <View style={[styles.parent]}>
