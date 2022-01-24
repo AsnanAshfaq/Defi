@@ -10,10 +10,11 @@ import {Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 type props = {
+  input: string;
+  setInput: (text: string) => void;
   handleSend: (text: string) => void;
 };
-const PostInput: FC<props> = ({handleSend}) => {
-  const [Input, setInput] = useState('');
+const PostInput: FC<props> = ({input, setInput, handleSend}) => {
   const ref = useRef<any>(null);
 
   Keyboard.addListener('keyboardDidHide', () => {
@@ -32,7 +33,7 @@ const PostInput: FC<props> = ({handleSend}) => {
           placeholder={'Write Something'}
           ref={ref}
           style={styles.textField}
-          value={Input}
+          value={input}
           onChangeText={text => setInput(text)}
           placeholderTextColor={Colors.GREY}
           keyboardType={'default'}
@@ -49,7 +50,7 @@ const PostInput: FC<props> = ({handleSend}) => {
             alignItems: 'flex-end',
           },
         ]}>
-        <TouchableOpacity onPress={() => handleSend(Input)}>
+        <TouchableOpacity onPress={() => handleSend(input)}>
           <Feather name="send" color={Colors.PURPLE} size={Width * 0.07} />
         </TouchableOpacity>
       </View>

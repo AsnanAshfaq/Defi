@@ -5,11 +5,13 @@ import {
   FlatList,
   Keyboard,
   RefreshControl,
+  Text,
+  ToastAndroid,
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
-import {Height, Width} from '../../Constants/Size';
+import {Height, Sizes, Width} from '../../Constants/Size';
 import PostInput from '../../Components/PostInput';
 import PostCard from '../../Components/PostCard';
 import firestore from '@react-native-firebase/firestore';
@@ -25,10 +27,20 @@ const Posts: FC = () => {
   const [posts, setPosts] = useState<Array<{id: string; text: string}>>([]);
   const [refreshing, setrefreshing] = useState(false);
   const [loading, setloading] = useState(false);
+  const [Input, setInput] = useState('');
 
   const handleSend = (text: string) => {
     if (text.trim() !== '') {
-      console.log('Sending text');
+      firestore()
+        .collection('posts')
+        .add({
+          text: text,
+        })
+        .then(() => {
+          setInput('');
+          Keyboard.dismiss();
+          ToastAndroid.show('Post has been added', 1500);
+        });
     } else {
       Keyboard.dismiss();
     }
@@ -64,7 +76,25 @@ const Posts: FC = () => {
   };
 
   useEffect(() => {
-    getPosts();
+    const subscribe = firestore()
+      .collection('posts')
+      .onSnapshot(documentSnapshot => {
+        documentSnapshot.docs.map(doc => {
+          setPosts(prev => {
+            return [
+              {
+                id: doc.id,
+                text: doc.data().text,
+              },
+              ...prev,
+            ];
+          });
+        });
+
+        // console.log('User data: ', documentSnapshot.docs);
+      });
+
+    return () => subscribe();
   }, []);
   return (
     <View
@@ -74,12 +104,20 @@ const Posts: FC = () => {
       ]}>
       <Header label="Posts" />
       <View style={{marginTop: Height * 0.03}}>
-        <PostInput handleSend={handleSend} />
+        <PostInput
+          handleSend={handleSend}
+          input={Input}
+          setInput={text => setInput(text)}
+        />
       </View>
 
       {loading ? (
         <View style={[{flex: 1}, styles.center]}>
           <Loading color={Colors.DARK_PURPLE} width={Width * 0.5} />
+        </View>
+      ) : !loading && posts.length === 0 ? (
+        <View style={[{flex: 1}, styles.center]}>
+          <Text style={styles.text}>No posts yet</Text>
         </View>
       ) : (
         <FlatList
@@ -111,5 +149,10 @@ const styles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    fontSize: Sizes.normal * 0.8,
+    fontFamily: 'TitilliumWeb-Regular',
+    color: Colors.DARK_PURPLE,
   },
 });
