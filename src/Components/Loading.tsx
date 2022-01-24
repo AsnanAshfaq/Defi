@@ -12,7 +12,7 @@ type props = {
 };
 const Loading: FC<props> = ({
   width = Width * 0.35,
-  height = Width * 0.1,
+  // height = Width * 0.1,
   text,
   color = Colors.WHITE,
 }) => {

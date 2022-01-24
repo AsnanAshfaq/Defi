@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import React, {FC} from 'react';
 import {Width} from '../Constants/Size';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

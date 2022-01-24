@@ -1,7 +1,6 @@
 import {
   Keyboard,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -17,7 +16,7 @@ const PostInput: FC<props> = ({handleSend}) => {
   const [Input, setInput] = useState('');
   const ref = useRef<any>(null);
 
-  Keyboard.addListener('keyboardDidHide', e => {
+  Keyboard.addListener('keyboardDidHide', () => {
     if (ref.current) {
       ref?.current.blur();
     }
