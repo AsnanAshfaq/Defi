@@ -14,29 +14,18 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import auth from '@react-native-firebase/auth';
-import Loading from './Loading';
+import Loading from '../Components/Loading';
 
 type props = {
   isShow: boolean;
   toggleModal: () => void;
 };
 
-const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
+const DeleteModal: FC<props> = ({isShow, toggleModal}) => {
   const [loading, setloading] = useState(false);
 
-  const handleLogout = () => {
-    setloading(true);
-
-    auth()
-      .signOut()
-      .then(() => {
-        setloading(false);
-        toggleModal();
-      })
-      .catch(() => {
-        setloading(false);
-        toggleModal();
-      });
+  const handleDelete = () => {
+    console.log('Deleting images');
   };
   return (
     <Modal
@@ -59,12 +48,12 @@ const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
       useNativeDriverForBackdrop={true}>
       <>
         <View style={styles.headingContainer}>
-          <Text style={[styles.heading]}>Logout </Text>
+          <Text style={[styles.heading]}>Deleting Image </Text>
         </View>
 
         <View style={[{flex: 0.4}, styles.center]}>
           <Text style={styles.helpText}>
-            Are you sure that you want to logout?
+            Are you sure that you want to delete this image?
           </Text>
         </View>
 
@@ -87,7 +76,8 @@ const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
             <TouchableOpacity
               onPress={() => {
                 // toggle modal first
-                handleLogout();
+                // handleDelete();
+                toggleModal();
               }}
               style={[styles.applyButton]}>
               <Text style={[styles.apply]}>Yes</Text>
@@ -108,7 +98,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     marginVertical: Height * 0.32,
     position: 'absolute',
-    height: Height * 0.23,
+    height: Height * 0.25,
     marginHorizontal: Width * 0.1,
     width: Width * 0.8,
   },
@@ -158,4 +148,4 @@ const styles = StyleSheet.create({
     fontFamily: 'TitilliumWeb-Regular',
   },
 });
-export default LogoutModal;
+export default DeleteModal;

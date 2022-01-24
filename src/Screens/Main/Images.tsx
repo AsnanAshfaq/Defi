@@ -6,13 +6,14 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
 import {Height, Width} from '../../Constants/Size';
 import ImageCard from '../../Components/ImageCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'react-native-image-picker';
+import DeleteModal from '../../Modals/DeleteModal';
 
 const Data = [
   'https://cdn.pixabay.com/photo/2017/01/08/13/58/cube-1963036__340.jpg',
@@ -22,6 +23,9 @@ const Data = [
   'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
 ];
 const Images: FC = () => {
+  const [modal, setmodal] = useState(false);
+
+  const uploadImage = () => {};
   const openCamera = () => {
     ImagePicker.launchCamera(
       {
@@ -44,19 +48,22 @@ const Images: FC = () => {
       },
     );
   };
+
+  const handleDelete = () => {
+    setmodal(true);
+  };
   return (
     <View style={[styles.parent]}>
       <Header label="Images" />
+
+      <DeleteModal isShow={modal} toggleModal={() => setmodal(false)} />
 
       <FlatList
         data={Data}
         style={{marginTop: Height * 0.03}}
         keyExtractor={(item, index) => `${index}`}
         renderItem={({item}) => (
-          <ImageCard
-            src={item}
-            handleDelete={() => console.log('Handling delete')}
-          />
+          <ImageCard src={item} handleDelete={handleDelete} />
         )}
         contentContainerStyle={styles.center}
       />
@@ -65,9 +72,8 @@ const Images: FC = () => {
       <View style={styles.iconContainer}>
         <View
           style={[
-            {flex: 1},
-
             {
+              flex: 1,
               alignItems: 'flex-start',
               justifyContent: 'center',
               borderRightColor: Colors.WHITE,

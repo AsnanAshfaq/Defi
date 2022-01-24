@@ -13,7 +13,7 @@ import Colors from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import CalculatorInput from '../../Components/CalculatorInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import OperatorModal from '../../Components/OperatorModal';
+import OperatorModal from '../../Modals/OperatorModal';
 
 const ICON_SIZE = Width * 0.07;
 const Calculate: FC = () => {

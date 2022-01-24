@@ -1,4 +1,3 @@
-/* eslint-disable no-sparse-arrays */
 import React, {FC, useState, useEffect} from 'react';
 import {
   View,

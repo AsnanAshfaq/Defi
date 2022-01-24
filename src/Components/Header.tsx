@@ -3,7 +3,7 @@ import React, {FC, useState} from 'react';
 import Colors from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import LogoutModal from './LogoutModal';
+import LogoutModal from '../Modals/LogoutModal';
 import auth from '@react-native-firebase/auth';
 
 type props = {
