@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import {Sizes, Width} from '../Constants/Size';
 import Colors from '../Constants/Colors';
 import Feather from 'react-native-vector-icons/Feather';
-const PostInput = () => {
+type props = {
+  handleSend: (text: string) => void;
+};
+const PostInput: FC<props> = ({handleSend}) => {
   const [Input, setInput] = useState('');
   const ref = useRef<any>(null);
 
@@ -20,9 +23,6 @@ const PostInput = () => {
     }
   });
 
-  const handleSend = () => {
-    console.log('Sending text');
-  };
   return (
     <View style={{flexDirection: 'row'}}>
       <View
@@ -50,7 +50,7 @@ const PostInput = () => {
             alignItems: 'flex-end',
           },
         ]}>
-        <TouchableOpacity onPress={handleSend}>
+        <TouchableOpacity onPress={() => handleSend(Input)}>
           <Feather name="send" color={Colors.PURPLE} size={Width * 0.07} />
         </TouchableOpacity>
       </View>

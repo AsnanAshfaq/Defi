@@ -110,7 +110,7 @@ const SignIn: FC<props> = ({navigation}) => {
         {/* rest of the stuff */}
         <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>
           <Text style={[styles.footerText, {color: Colors.GREY}]}>
-            New to Dafi ?{' '}
+            New to Defi ?{' '}
             <TouchableWithoutFeedback
               onPress={() => navigation.navigate('SignUp')}>
               <Text style={[styles.footerText, {color: Colors.WHITE}]}>
