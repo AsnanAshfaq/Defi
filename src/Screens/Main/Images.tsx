@@ -5,15 +5,19 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  ToastAndroid,
+  RefreshControl,
 } from 'react-native';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
-import {Height, Width} from '../../Constants/Size';
+import {Height, Sizes, Width} from '../../Constants/Size';
 import ImageCard from '../../Components/ImageCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'react-native-image-picker';
 import DeleteModal from '../../Modals/DeleteModal';
+import storage from '@react-native-firebase/storage';
+import Loading from '../../Components/Loading';
 
 const Data = [
   'https://cdn.pixabay.com/photo/2017/01/08/13/58/cube-1963036__340.jpg',
@@ -24,8 +28,26 @@ const Data = [
 ];
 const Images: FC = () => {
   const [modal, setmodal] = useState(false);
+  const [paths, setpaths] = useState<Array<string>>([]);
+  const [loading, setloading] = useState(false);
+  const [refreshing, setrefreshing] = useState(false);
 
-  const uploadImage = () => {};
+  const uploadImage = (path: any, filename: any) => {
+    let reference = storage().ref(filename);
+
+    const task = reference.putFile(path);
+
+    console.log('Uploading image');
+    task
+      .then(() => {
+        ToastAndroid.show('Image has been uploaded', 1500);
+        ToastAndroid.show('Refreshing', 1500);
+        // setrefreshing(true);
+      })
+      .catch(() => {
+        console.log('Error occurred while uploading image');
+      });
+  };
   const openCamera = () => {
     ImagePicker.launchCamera(
       {
@@ -33,7 +55,15 @@ const Images: FC = () => {
         cameraType: 'back',
       },
       res => {
-        console.log('Respnose is', res);
+        if (res.didCancel) {
+          console.log('User cancelled');
+        } else {
+          console.log('Response is', res.assets);
+          const fileName = res.assets[0].fileName;
+          const path = res.assets[0].uri;
+
+          uploadImage(path, fileName);
+        }
       },
     );
   };
@@ -44,29 +74,81 @@ const Images: FC = () => {
         mediaType: 'photo',
       },
       res => {
-        console.log('Response is', res);
+        if (res.didCancel) {
+          console.log('User cancelled');
+        } else {
+          console.log('Response is', res.assets);
+          const fileName = res.assets[0].fileName;
+          const path = res.assets[0].uri;
+
+          uploadImage(path, fileName);
+        }
       },
     );
   };
 
-  const handleDelete = () => {
+  const handleDelete = (path: string) => {
     setmodal(true);
+    const imageRef = storage().refFromURL(path);
+    imageRef
+      .delete()
+      .then(() => {
+        ToastAndroid.show('Image has been deleted', 1500);
+      })
+      .catch(() => {
+        ToastAndroid.show('Error occurred while deleting image', 1500);
+      });
   };
+
+  const getImagePaths = async () => {
+    // setloading(true);
+    const reference = storage().ref().child('Images').listAll();
+    const urls = await Promise.all(
+      (await reference).items.map(ref => ref.getDownloadURL()),
+    );
+    setpaths(urls);
+    // setloading(false);
+  };
+
+  const onRefresh = () => {
+    setrefreshing(true);
+    getImagePaths();
+    setrefreshing(false);
+  };
+
+  useEffect(() => {
+    getImagePaths();
+  }, []);
+
   return (
     <View style={[styles.parent]}>
       <Header label="Images" />
 
       <DeleteModal isShow={modal} toggleModal={() => setmodal(false)} />
 
-      <FlatList
-        data={Data}
-        style={{marginTop: Height * 0.03}}
-        keyExtractor={(item, index) => `${index}`}
-        renderItem={({item}) => (
-          <ImageCard src={item} handleDelete={handleDelete} />
-        )}
-        contentContainerStyle={styles.center}
-      />
+      {loading ? (
+        <View style={[{flex: 1}, styles.center]}>
+          <Loading color={Colors.DARK_PURPLE} width={Width * 0.5} />
+        </View>
+      ) : (
+        <FlatList
+          data={paths}
+          style={{marginTop: Height * 0.03}}
+          keyExtractor={(item, index) => `${index}`}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              progressBackgroundColor={Colors.DARK_PURPLE}
+              colors={[Colors.WHITE]}
+              onRefresh={onRefresh}
+            />
+          }
+          renderItem={({item}) => (
+            <ImageCard src={item} handleDelete={handleDelete} />
+          )}
+          contentContainerStyle={styles.center}
+        />
+      )}
 
       {/* icon container  */}
       <View style={styles.iconContainer}>
@@ -132,5 +214,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'transparent',
+  },
+  text: {
+    fontSize: Sizes.normal * 0.8,
+    fontFamily: 'TitilliumWeb-Regular',
+    color: Colors.DARK_PURPLE,
   },
 });
