@@ -38,6 +38,7 @@ const SignUp: FC<props> = ({navigation}) => {
     } else if (Input.password.value.trim() === '') {
       ToastAndroid.show('Password cannot be empty', 1500);
     } else {
+      setloading(true);
       auth()
         .createUserWithEmailAndPassword(Input.email.value, Input.password.value)
         .then(() => {
@@ -118,7 +119,11 @@ const SignUp: FC<props> = ({navigation}) => {
               </View>
             </View>
             <View style={[{flex: 0.15}, styles.center]}>
-              <Button text="Register" onPress={handleRegister} />
+              <Button
+                text="Register"
+                onPress={handleRegister}
+                loading={loading}
+              />
             </View>
             {/* rest of the stuff */}
             <View style={[{flex: 0.2}, styles.center, styles.footerContainer]}>

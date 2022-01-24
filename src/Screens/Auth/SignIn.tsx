@@ -40,6 +40,7 @@ const SignIn: FC<props> = ({navigation}) => {
     } else if (Input.password.value.trim() === '') {
       ToastAndroid.show('Password cannot be empty', 1500);
     } else {
+      setloading(true);
       auth()
         .signInWithEmailAndPassword(Input.email.value, Input.password.value)
         .then(() => {
