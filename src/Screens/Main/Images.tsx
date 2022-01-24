@@ -27,7 +27,6 @@ const Data = [
   'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
 ];
 const Images: FC = () => {
-  const [modal, setmodal] = useState(false);
   const [paths, setpaths] = useState<Array<string>>([]);
   const [loading, setloading] = useState(false);
   const [refreshing, setrefreshing] = useState(false);
@@ -87,26 +86,17 @@ const Images: FC = () => {
     );
   };
 
-  const handleDelete = (path: string) => {
-    setmodal(true);
-    const imageRef = storage().refFromURL(path);
-    imageRef
-      .delete()
-      .then(() => {
-        ToastAndroid.show('Image has been deleted', 1500);
-      })
-      .catch(() => {
-        ToastAndroid.show('Error occurred while deleting image', 1500);
-      });
-  };
+  const handleDelete = (path: string) => {};
 
   const getImagePaths = async () => {
+    setloading(true);
     const reference = storage().ref().child('Images').listAll();
     const urls = await Promise.all(
       (await reference).items.map(ref => ref.getDownloadURL()),
     );
     setpaths(urls);
     setrefreshing(false);
+    setloading(false);
   };
 
   const onRefresh = () => {
@@ -121,8 +111,6 @@ const Images: FC = () => {
   return (
     <View style={[styles.parent]}>
       <Header label="Images" />
-
-      <DeleteModal isShow={modal} toggleModal={() => setmodal(false)} />
 
       {loading ? (
         <View style={[{flex: 1}, styles.center]}>
@@ -141,9 +129,7 @@ const Images: FC = () => {
               onRefresh={onRefresh}
             />
           }
-          renderItem={({item}) => (
-            <ImageCard src={item} handleDelete={handleDelete} />
-          )}
+          renderItem={({item}) => <ImageCard src={item} />}
           contentContainerStyle={styles.center}
         />
       )}

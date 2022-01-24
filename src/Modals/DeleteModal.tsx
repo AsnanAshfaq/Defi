@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
@@ -19,14 +20,16 @@ import Loading from '../Components/Loading';
 type props = {
   isShow: boolean;
   toggleModal: () => void;
+  deleting: boolean;
+  handleDelete: () => void;
 };
 
-const DeleteModal: FC<props> = ({isShow, toggleModal}) => {
-  const [loading, setloading] = useState(false);
-
-  const handleDelete = () => {
-    console.log('Deleting images');
-  };
+const DeleteModal: FC<props> = ({
+  isShow,
+  toggleModal,
+  deleting,
+  handleDelete,
+}) => {
   return (
     <Modal
       isVisible={isShow}
@@ -59,8 +62,8 @@ const DeleteModal: FC<props> = ({isShow, toggleModal}) => {
 
         {/* done button  */}
 
-        {loading ? (
-          <View style={styles.loadingContainer}>
+        {deleting ? (
+          <View style={[styles.loadingContainer, {alignItems: 'center'}]}>
             <Loading />
           </View>
         ) : (
@@ -76,8 +79,7 @@ const DeleteModal: FC<props> = ({isShow, toggleModal}) => {
             <TouchableOpacity
               onPress={() => {
                 // toggle modal first
-                // handleDelete();
-                toggleModal();
+                handleDelete();
               }}
               style={[styles.applyButton]}>
               <Text style={[styles.apply]}>Yes</Text>

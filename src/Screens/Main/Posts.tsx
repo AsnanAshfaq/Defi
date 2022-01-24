@@ -76,10 +76,6 @@ const Posts: FC = () => {
         <View style={[{flex: 1}, styles.center]}>
           <Loading color={Colors.DARK_PURPLE} width={Width * 0.5} />
         </View>
-      ) : !loading && posts.length === 0 ? (
-        <View style={[{flex: 1}, styles.center]}>
-          <Text style={styles.text}>No posts yet</Text>
-        </View>
       ) : (
         <FlatList
           data={posts}

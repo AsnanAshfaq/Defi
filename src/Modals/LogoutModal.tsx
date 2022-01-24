@@ -71,7 +71,7 @@ const LogoutModal: FC<props> = ({isShow, toggleModal}) => {
         {/* done button  */}
 
         {loading ? (
-          <View style={styles.loadingContainer}>
+          <View style={[styles.loadingContainer, {alignItems: 'center'}]}>
             <Loading />
           </View>
         ) : (

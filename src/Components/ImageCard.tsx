@@ -1,23 +1,55 @@
-import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  ToastAndroid,
+} from 'react-native';
 import React, {FC, useState} from 'react';
 import {Sizes, Width} from '../Constants/Size';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../Constants/Colors';
+import DeleteModal from '../Modals/DeleteModal';
+import storage from '@react-native-firebase/storage';
 
 type props = {
   src: string;
-  handleDelete: (path: string) => void;
 };
 
 const GREY_IMAGE_PATH =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4O8-Ud_7lnP6aq-UFoJUP0fhGuVqLaMg-eQ&usqp=CAU';
 const ICON_SIZE = Width * 0.07;
 
-const ImageCard: FC<props> = ({src, handleDelete}) => {
-  const [loading, setloading] = useState(true);
+const ImageCard: FC<props> = ({src}) => {
+  const [deleting, setDeleting] = useState(false);
+  const [modal, setmodal] = useState(false);
+  const [loading, setloading] = useState(false);
 
+  const handleDelete = () => {
+    setDeleting(true);
+    const imageRef = storage().refFromURL(src);
+    imageRef
+      .delete()
+      .then(() => {
+        setDeleting(false);
+        setmodal(false);
+        ToastAndroid.show('Image has been deleted', 1500);
+      })
+      .catch(() => {
+        setDeleting(false);
+        setmodal(false);
+        ToastAndroid.show('Error occurred while deleting image', 1500);
+      });
+  };
   return (
     <View>
+      <DeleteModal
+        isShow={modal}
+        toggleModal={() => setmodal(false)}
+        handleDelete={handleDelete}
+        deleting={deleting}
+      />
       <Image
         source={{uri: loading ? GREY_IMAGE_PATH : src}}
         style={styles.image}
@@ -26,7 +58,7 @@ const ImageCard: FC<props> = ({src, handleDelete}) => {
         onError={() => setloading(false)}
       />
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => handleDelete(src)}>
+        <TouchableOpacity onPress={() => setmodal(true)}>
           <MaterialIcons
             name="cancel"
             size={ICON_SIZE * 0.9}

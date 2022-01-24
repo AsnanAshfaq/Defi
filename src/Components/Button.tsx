@@ -12,8 +12,12 @@ type props = {
 const Button: FC<props> = ({text, onPress, loading}) => {
   if (loading)
     return (
-      <View style={[styles.container, {height: Height * 0.06}]}>
-        <Loading width={Width * 0.3} />
+      <View
+        style={[
+          styles.container,
+          {height: Height * 0.065, alignItems: 'center'},
+        ]}>
+        <Loading />
       </View>
     );
 
@@ -32,6 +36,7 @@ const Button: FC<props> = ({text, onPress, loading}) => {
             backgroundColor: 'red',
             flex: 0.15,
           }}>
+
           <Loading />
         </View>
       ) : (
