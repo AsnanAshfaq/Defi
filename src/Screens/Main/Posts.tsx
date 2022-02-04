@@ -61,7 +61,6 @@ const Posts: FC = () => {
     <View
       style={[
         styles.parent,
-        {backgroundColor: Colors.SCREEN_BACKGROUND_COLOR},
       ]}>
       <Header label="Posts" />
       <View style={{marginTop: Height * 0.03}}>

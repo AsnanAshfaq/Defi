@@ -21,8 +21,8 @@ type props = {
 };
 const SignUp: FC<props> = ({navigation}) => {
   const [Input, setInput] = useState({
-    email: {value: 'asnanashfaq@yahoo.com', error: ''},
-    password: {value: 'Shanay_Ash18', error: ''},
+    email: {value: '', error: ''},
+    password: {value: '', error: ''},
   });
   const [loading, setloading] = useState(false);
 

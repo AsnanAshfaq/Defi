@@ -11,12 +11,13 @@ import {
 import React, {FC, useState} from 'react';
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
-import {Sizes, Width} from '../../Constants/Size';
+import {Height, Sizes, Width} from '../../Constants/Size';
 import CalculatorInput from '../../Components/CalculatorInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OperatorModal from '../../Modals/OperatorModal';
 import Button from '../../Components/Button';
 import Loading from '../../Components/Loading';
+import Slider from '@react-native-community/slider';
 
 const ICON_SIZE = Width * 0.07;
 const Calculate: FC = () => {
@@ -52,7 +53,9 @@ const Calculate: FC = () => {
       setloading(true);
 
       fetch(
-        `https://backend-defi.herokuapp.com/?first=${Input.first.value.trim()}&second=${Input.second.value.trim()}&operator=${Input.operator.trim()}`,
+        `https://backend-defi.herokuapp.com/?first=${
+          Input.first.value
+        }&second=${Input.second.value}&operator=${Input.operator.trim()}`,
       )
         .then(res => res.json())
         .then(data => {
@@ -107,6 +110,10 @@ const Calculate: FC = () => {
               }
             />
 
+            <View style={styles.center}>
+              <Text style={styles.valueText}>{Input.first.value}</Text>
+            </View>
+
             {/* operator container  */}
             <View
               style={{
@@ -147,6 +154,10 @@ const Calculate: FC = () => {
                 })
               }
             />
+
+            <View style={styles.center}>
+              <Text style={styles.valueText}>{Input.second.value}</Text>
+            </View>
           </View>
 
           <View style={[styles.buttonContainer, styles.center]}>
@@ -192,6 +203,11 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+  },
+  valueText: {
+    color: Colors.DARK_PURPLE,
+    fontSize: Sizes.normal * 2,
+    fontFamily: 'Dongle-Bold',
   },
   operatorText: {
     color: Colors.DARK_PURPLE,

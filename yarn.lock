@@ -1547,6 +1547,11 @@
   dependencies:
     "invariant" "^2.2.4"
 
+"@react-native-community/slider@^4.2.0":
+  "integrity" "sha512-7LUDk63cbkDgmTqHBWn0pXzwF/VY9I3wDTnLWNehgQu7GlluHDn02qHgINxS9dRoG96JOqLFxRxnCEKkg5zcmQ=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.2.0.tgz"
+  "version" "4.2.0"
+
 "@react-native-firebase/app@^14.2.3", "@react-native-firebase/app@14.2.3", "@react-native-firebase/app@14.2.4":
   "integrity" "sha512-PSAYqQGo+/k2KgqOk3sLu0lRxvymvB7Ps4qX2A5JyaYWM419ofZtmYn8glwOB0qWaaMiF+dsh9gAzikxTD3DkA=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-14.2.3.tgz"

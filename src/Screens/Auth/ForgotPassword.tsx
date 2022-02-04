@@ -23,13 +23,10 @@ type props = {
 const ForgotPassword: FC<props> = ({navigation}) => {
   const [loading, setloading] = useState(false);
   const [Input, setInput] = useState({
-    email: {value: '18asnan@gmail.com', error: ''},
-    password: {value: 'Shanay_Ash18', error: ''},
-    confirm_password: {value: 'Shanay_Ash18', error: ''},
+    email: {value: '', error: ''},
   });
 
   const changePassword = () => {
-    setloading(true);
     // few checks
     const emailRegex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -38,16 +35,22 @@ const ForgotPassword: FC<props> = ({navigation}) => {
       ToastAndroid.show('Email cannot be empty', 1500);
     } else if (!emailRegex.test(Input.email.value)) {
       ToastAndroid.show('Plase enter a valid Email Address', 1500);
-    } else if (Input.password.value.trim() === '') {
-      ToastAndroid.show('Password cannot be empty', 1500);
-    } else if (
-      Input.password.value.trim() !== Input.confirm_password.value.trim()
-    ) {
-      ToastAndroid.show('Passwords are not same', 1500);
     } else {
-      console.log('Everything is clear');
+      setloading(true);
+      auth()
+        .sendPasswordResetEmail(Input.email.value)
+        .then(res => {
+          ToastAndroid.show(
+            'We have sent you an email containing reset link',
+            1500,
+          );
+          setloading(false);
+        })
+        .catch(() => {
+          ToastAndroid.show('An error occurred while resetting password', 1500);
+          setloading(false);
+        });
     }
-    setloading(false);
   };
 
   return (
@@ -67,7 +70,7 @@ const ForgotPassword: FC<props> = ({navigation}) => {
           <LogoWithTagLine />
         </View>
 
-        <View style={{flex: 0.25}}>
+        <View style={[{flex: 0.2}, styles.center]}>
           <View style={styles.inputContainer}>
             <CustomTextInput
               defaultValue={Input.email.value}
@@ -87,56 +90,17 @@ const ForgotPassword: FC<props> = ({navigation}) => {
               name="email"
             />
           </View>
-          <View style={styles.inputContainer}>
-            <CustomTextInput
-              defaultValue={Input.password.value}
-              keyboardType="default"
-              onChangeText={text =>
-                setInput(props => {
-                  return {
-                    ...props,
-                    password: {
-                      value: text,
-                      error: '',
-                    },
-                  };
-                })
-              }
-              placeholder="Password"
-              name="password"
-              is_password
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <CustomTextInput
-              defaultValue={Input.confirm_password.value}
-              keyboardType="default"
-              onChangeText={text =>
-                setInput(props => {
-                  return {
-                    ...props,
-                    confirm_password: {
-                      value: text,
-                      error: '',
-                    },
-                  };
-                })
-              }
-              placeholder="Confirm Password"
-              name="password"
-              is_password
-            />
-          </View>
         </View>
         <View style={[{flex: 0.15}, styles.center]}>
           <Button
-            text="Change Password"
+            text="Reset Password"
             onPress={changePassword}
             loading={loading}
           />
         </View>
         {/* rest of the stuff */}
-        <View style={[{flex: 0.15}, styles.center, styles.footerContainer]}>
+        <View
+          style={[{flex: 0.2, alignItems: 'center'}, styles.footerContainer]}>
           <Text style={[styles.footerText, {color: Colors.GREY}]}>
             Back to{'  '}
             <TouchableWithoutFeedback

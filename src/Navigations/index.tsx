@@ -16,7 +16,9 @@ const index: FC<props> = ({is_authenticated}) => {
     <NavigationContainer
       theme={{
         colors: {
-          background: is_authenticated ? Colors.WHITE : Colors.PURPLE, //depending upn the auth state(if true than purple otherwise white)
+          background: is_authenticated
+            ? Colors.SCREEN_BACKGROUND_COLOR
+            : Colors.PURPLE, //depending upn the auth state(if true than purple otherwise white)
           border: '#fff',
           card: '#fff',
           notification: '#fff',

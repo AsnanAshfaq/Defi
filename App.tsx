@@ -16,12 +16,14 @@ import auth from '@react-native-firebase/auth';
 
 const App = () => {
   const [showSplash, setshowSplash] = useState(true);
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [user, setUser] = useState<any>();
 
   function onAuthStateChanged(user: any) {
-    setUser(user);
-    if (loading) setloading(false);
+    setTimeout(() => {
+      setUser(user);
+      if (loading) setloading(false);
+    }, 3000);
   }
 
   useEffect(() => {
