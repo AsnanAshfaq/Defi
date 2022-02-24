@@ -110,9 +110,9 @@ const Calculate: FC = () => {
               }
             />
 
-            <View style={styles.center}>
+            {/* <View style={styles.center}>
               <Text style={styles.valueText}>{Input.first.value}</Text>
-            </View>
+            </View> */}
 
             {/* operator container  */}
             <View
@@ -155,9 +155,9 @@ const Calculate: FC = () => {
               }
             />
 
-            <View style={styles.center}>
+            {/* <View style={styles.center}>
               <Text style={styles.valueText}>{Input.second.value}</Text>
-            </View>
+            </View> */}
           </View>
 
           <View style={[styles.buttonContainer, styles.center]}>
