@@ -62,8 +62,8 @@ const Calculate: FC = () => {
           setInput(props => {
             return {
               ...props,
-              first: {value: '', error: ''},
-              second: {value: '', error: ''},
+              first: {value: props.first.value, error: ''},
+              second: {value: props.second.value, error: ''},
               result: data,
             };
           });
@@ -72,6 +72,8 @@ const Calculate: FC = () => {
         .catch(() => setloading(false));
     }
   };
+
+  console.log('Input is', Input);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -119,6 +121,7 @@ const Calculate: FC = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}>
               <View style={styles.operatorTextContainer}>
                 <Text style={styles.operatorText}>
